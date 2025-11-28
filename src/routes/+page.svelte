@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { AnimeService } from '$lib/animeService.js';
   import { goto } from '$app/navigation';
+  import AuthComponent from '$lib/components/AuthComponent.svelte';
 
   let animes = [];
   let loading = true;
@@ -30,6 +31,7 @@
   <header>
     <h1>🌟 AnimeStar</h1>
     <p>Descubre los animes más populares</p>
+    <AuthComponent />
   </header>
 
   {#if loading}
