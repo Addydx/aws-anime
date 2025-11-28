@@ -1,15 +1,18 @@
 <script>
   import { onMount } from 'svelte';
-  import { getCurrentUser, signOut, signInWithRedirect } from 'aws-amplify/auth';
   
   let user = null;
   let loading = true;
+  let authError = null;
 
   onMount(async () => {
     try {
+      // Verificar si Amplify está configurado antes de usar auth
+      const { getCurrentUser } = await import('aws-amplify/auth');
       user = await getCurrentUser();
     } catch (error) {
-      console.log('No user signed in');
+      console.log('Auth not configured yet or no user signed in:', error.message);
+      authError = error.message;
     } finally {
       loading = false;
     }
@@ -17,6 +20,7 @@
 
   async function handleSignOut() {
     try {
+      const { signOut } = await import('aws-amplify/auth');
       await signOut();
       user = null;
     } catch (error) {
@@ -26,15 +30,21 @@
 
   async function handleSignIn() {
     try {
+      const { signInWithRedirect } = await import('aws-amplify/auth');
       await signInWithRedirect();
     } catch (error) {
       console.error('Error signing in:', error);
+      authError = error.message;
     }
   }
 </script>
 
 {#if loading}
-  <div class="auth-loading">Cargando...</div>
+  <div class="auth-loading">Cargando autenticación...</div>
+{:else if authError}
+  <div class="auth-info">
+    <span>🔧 Configurando backend... (Ejecuta: amplify push)</span>
+  </div>
 {:else if user}
   <div class="auth-info">
     <span>👋 Hola, {user.username}!</span>

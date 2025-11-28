@@ -1,6 +1,6 @@
 <script>
 	import favicon from '$lib/assets/favicon.svg';
-	import '../lib/amplifyConfig.js'; // Inicializar Amplify
+	// import '../lib/amplifyConfig.js'; // Activar después de configurar en consola web
 
 	let { children } = $props();
 </script>
