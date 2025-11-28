@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-anime-dev-b7aeb-authRole",
+      "UnauthRoleArn": "arn:aws:iam::340752831598:role/amplify-anime-dev-b7aeb-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::340752831598:role/amplify-anime-dev-b7aeb-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-anime-dev-b7aeb-deployment",
+      "UnauthRoleName": "amplify-anime-dev-b7aeb-unauthRole",
+      "StackName": "amplify-anime-dev-b7aeb",
+      "StackId": "arn:aws:cloudformation:us-east-1:340752831598:stack/amplify-anime-dev-b7aeb/0e7a8000-cc29-11f0-b53d-0e8d661a88d1",
+      "AmplifyAppId": "dh0vz409r2fty"
+    }
+  }
+}
