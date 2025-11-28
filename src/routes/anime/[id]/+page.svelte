@@ -1,36 +1,38 @@
 <script>
-  import { onMount } from 'svelte';
-  import { page } from '$app/stores';
-  import { goto } from '$app/navigation';
-  import { AnimeService } from '$lib/animeService.js';
+  import { onMount } from 'svelte';// importa onMount para ejecutar codigo al montar el componente
+  import { page } from '$app/stores';//importa page para acceder a los parametros de la ruta
+  import { goto } from '$app/navigation';//importa goto para la navegacion programatica 
+  import { AnimeService } from '$lib/animeService.js';//importa el servicio de anime para obtener datos de anmies
 
-  let anime = null;
-  let videos = null;
-  let loading = true;
-  let error = null;
-  let animeId;
+  let anime = null;//crea un variable para almacenar los detalles del animes
+  let videos = null;//crea una variable para almacenar los videos relacionados con el anime
+  let loading = true;//indica si los datos estan cargando
+  let error = null;//almacena cualquier erro que ocurra durante la carga
+  let animeId;//almancena el id del anime 
 
   // Obtener el ID del anime de la URL
-  $: animeId = $page.params.id;
+  $: animeId = $page.params.id;//se obtine el id del anime de los parametros de la ruta
+  //esto se actualiza automaticamente cuanod cambia la ruta
 
-  onMount(async () => {
-    if (animeId) {
-      await loadAnimeData();
+  //cuando el componente se monta, carga los detalles del anime
+  onMount(async () => {//funcion asincrona para cargar los detalles del anime
+    if (animeId) {//si hay un id de anime 
+      await loadAnimeData();//llama a la funcion para cargar a los detalles del animes c
     }
   });
 
-  async function loadAnimeData() {
-    try {
-      loading = true;
+  async function loadAnimeData() {//funcion asincrona para cargar los detalles del anime
+    try {//intenta ejecutar este codigo
+      loading = true;//indica que la carga ha comenzado
       // Cargar detalles del anime y videos en paralelo
-      const [animeData, videoData] = await Promise.all([
-        AnimeService.getAnimeDetails(animeId),
-        AnimeService.getAnimeVideos(animeId).catch(() => ({ trailers: [], promo: [] }))
+      const [animeData, videoData] = await Promise.all([//espera a que ambas promesas se resuelvan
+        AnimeService.getAnimeDetails(animeId),//llama al servicio para obtener los detalles del anime usando su id
+        AnimeService.getAnimeVideos(animeId).catch(() => ({ trailers: [], promo: [] }))//llama al servicio para obtener los video de los animes usando su id
       ]);
       
-      anime = animeData;
-      videos = videoData;
-      loading = false;
+      anime = animeData;//guarda los detalles del anime en la variable anime
+      videos = videoData;//guarda los videos relacionads en la variable
+      loading = false;//indica que la carga ha terminado
     } catch (err) {
       error = err.message;
       loading = false;
@@ -204,7 +206,7 @@
   :global(body) {
     margin: 0;
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #00012c 0%, #1802da 100%);
     min-height: 100vh;
   }
 

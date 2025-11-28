@@ -1,59 +1,63 @@
 <script>
-  import { onMount } from 'svelte';
-  import { AnimeService } from '$lib/animeService.js';
-  import { goto } from '$app/navigation';
-  import AuthComponent from '$lib/components/AuthComponent.svelte';
+  import { onMount } from 'svelte';// importa onMount para ejecutar el codigo cuando el componente se monta
+  import { AnimeService } from '$lib/animeService.js';//importa el servicio de anime 
+  import { goto } from '$app/navigation';//importa goto para navegar programaticamente por la app
+  //import AuthComponent from '$lib/components/AuthComponent.svelte';//importa el componente de autenticacion
 
-  let animes = [];
-  let loading = true;
-  let error = null;
+  let animes = [];//define un array para guardar los animes populares
+  let loading = true;//indica si los datos estan cargando
+  let error = null;//almacena cualquier error que ocurra durante la carga
 
-  onMount(async () => {
-    try {
-      animes = await AnimeService.getPopularAnime(20);
-      loading = false;
-    } catch (err) {
-      error = err.message;
-      loading = false;
+  //cuando el componente se monta, carga los animes populares 
+  onMount(async () => {//funcion asincrona para cargar los animes 
+    try {//intenta ejecutar este codigo
+      animes = await AnimeService.getPopularAnime(20);//llama al servicio para obtener los animes populares y los guarda en la variable animes que es un array 
+      //20 es el numero de animes a obtener
+      loading = false;//indica que la carga ha termiado
+    } catch (err) {//captura cualquier erro que ocurra durante la carga
+      error = err.message;//almacena el mensaje de error
+      loading = false;//indica que la carga ha terminado incluso si hay un error
     }
   });
-
-  function viewAnimeDetails(animeId) {
-    goto(`/anime/${animeId}`);
+//funcion para navegar a los detalles de un anime 
+  function viewAnimeDetails(animeId) {//recibe el id del anime
+    goto(`/anime/${animeId}`);//goto navega a la pagina de detalles del anime usando su id
+    //la ruta es carpeta anime y el id del anime 
   }
 </script>
 
-<svelte:head>
+<svelte:head><!-- aqui se dfine el titulo de la pagina  -->
   <title>AnimeStar - Animes Populares</title>
 </svelte:head>
 
-<main>
+<main><!-- se define el contenido principal de la pagina  -->
   <header>
-    <h1>🌟 AnimeStar</h1>
+    <h1>AnimeStar</h1>
     <p>Descubre los animes más populares</p>
-    <AuthComponent />
+    <!--<AuthComponent />-->
   </header>
 
-  {#if loading}
-    <div class="loading">
+  {#if loading}<!-- muestra un indicador de carga mientras se obtienen los animes populares  -->
+    <div class="loading"><!-- indicador de carga, con clase loading -->
       <div class="spinner"></div>
       <p>Cargando animes populares...</p>
     </div>
   {:else if error}
-    <div class="error">
+    <div class="error"><!-- muestra un mensaje de error si este llegara a ocurrir  -->
       <h2>❌ Error</h2>
       <p>{error}</p>
     </div>
   {:else}
-    <div class="anime-grid">
-      {#each animes as anime}
+    <div class="anime-grid"><!-- grid que contiene las tarjetas de los animes populares -->
+      {#each animes as anime}<!-- itera sobre el array de animes -->
+      <!-- al hacer click en una tarjeta de anime te manda a los detalles del anime   -->
         <div 
           class="anime-card" 
           on:click={() => viewAnimeDetails(anime.mal_id)}
           on:keydown={(e) => e.key === 'Enter' && viewAnimeDetails(anime.mal_id)}
           tabindex="0"
           role="button"
-        >
+        ><!-- aqui se define una tarjeta de anime que es interactica y accesible   -->
           <div class="anime-image">
             <img 
               src={anime.images.jpg.large_image_url} 
@@ -62,10 +66,10 @@
             />
             <div class="rating">
               ⭐ {anime.score || 'N/A'}
-            </div>
+            </div><!-- aqui se muestra la calificacion de un anime -->
           </div>
           <div class="anime-info">
-            <h3>{anime.title}</h3>
+            <h3>{anime.title}</h3><!-- muestra el titulo del anime -->
             <p class="year">{anime.year || 'N/A'}</p>
             <p class="episodes">{anime.episodes ? `${anime.episodes} eps` : 'En emisión'}</p>
           </div>
@@ -75,11 +79,12 @@
   {/if}
 </main>
 
+<!-- aqui se definen los estilos  -->
 <style>
   :global(body) {
     margin: 0;
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #00012c 0%, #1802da 100%);
     min-height: 100vh;
   }
 

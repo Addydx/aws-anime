@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" href={favicon} /> <!-- aqui se coloca un logo de svelte -->
 </svelte:head>
 
 {@render children()}
